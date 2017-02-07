@@ -4,12 +4,27 @@
         <style>
             body, canvas {margin: 0; padding: 0;}
         </style>
-        <script src="drawing.js"></script>
+        <script src="draw.js"></script>
     </head>
     <body>
         <canvas id="canvas" width="1280" height="720"></canvas>
         <script>
-            var drawable = new Drawable(canvas);
+            console.log("loaded");
+            // TODO: the following line is bad
+            var canvas = document.getElementById("canvas");
+            var ws = new WebSocket("ws://"+window.location.host+"/websocket/"+window.location.pathname.split("/")[2]);
+
+            ws.on_message = function(evt) {
+                if (evt.data == "host") {
+                    make_drawable(canvas, ws);
+                    console.log("drawing host");
+                } else if (evt.data == "client") {
+                    read_drawing(canvas, ws);
+                    console.log("drawing client");
+                } else {
+                    console.err("invalid websocket initializer");
+                }
+            };
         </script>
     </body>
 </html>

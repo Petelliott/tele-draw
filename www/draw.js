@@ -14,6 +14,8 @@ function make_drawable(canvas, socket) {
     var isdown = false;
     var last;
 
+    socket.onmessage = function() {};
+
     canvas.addEventListener("mousedown", function(e) {
         last = getMousePos(canvas, e);
         isdown = true;
