@@ -6,6 +6,7 @@ function parse_in(str) {
 
 function read_drawing(canvas, socket) {
     var ctx = canvas.getContext('2d');
+    ctx.lineWidth=2;
 
     var new_line = true;
     var last;
