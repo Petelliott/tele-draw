@@ -1,5 +1,5 @@
 function parse_in(str) {
-    let nums = evt.data.split('|');
+    let nums = str.split('|');
     return [parseInt(nums[0]), parseInt(nums[1])];
 }
 
@@ -15,6 +15,7 @@ function read_drawing(canvas, socket) {
             new_line = true;
         } else if (new_line) {
             last = parse_in(evt.data);
+            new_line = false
         } else {
             current = parse_in(evt.data);
 
