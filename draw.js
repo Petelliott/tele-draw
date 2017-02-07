@@ -8,7 +8,7 @@ function getMousePos(canvas, evt) {
 }
 
 
-function Drawable(canvas, socket) {
+function make_drawable(canvas, socket) {
     var ctx = canvas.getContext('2d');
 
     var isdown = false;
