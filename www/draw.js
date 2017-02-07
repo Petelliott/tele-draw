@@ -27,6 +27,7 @@ function make_drawable(canvas, socket) {
 
     function start(e) {
         last = getMousePos(canvas, e);
+        socket.send(last[0]+"|"+last[1]);
         isdown = true;
     }
     canvas.addEventListener("mousedown", start);
