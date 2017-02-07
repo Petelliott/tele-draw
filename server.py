@@ -29,14 +29,18 @@ class WSHandler(tornado.websocket.WebSocketHandler):
         elif "host" not in drawings[d_id]:
             print("hosting", self.d_id)
             drawings[d_id]["host"] = self
+            drawings[d_id]["history"] = []
             self.write_message("host")
         else:
             print("client on", self.d_id)
             drawings[d_id]["clients"].append(self)
             self.write_message("client")
+            for command in drawings[self.d_id]["history"]:
+                self.write_message(command)
 
     def on_message(self, data):
         if drawings[self.d_id]["host"] is self:
+            drawings[self.d_id]["history"].append(data)
             for client in drawings[self.d_id]["clients"]:
                 client.write_message(data)
 
