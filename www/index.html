@@ -5,16 +5,16 @@
             body, canvas {margin: 0; padding: 0;}
         </style>
         <script src="draw.js"></script>
+        <script src="view.js"></script>
     </head>
     <body>
         <canvas id="canvas" width="1280" height="720"></canvas>
         <script>
-            console.log("loaded");
-            // TODO: the following line is bad
             var canvas = document.getElementById("canvas");
+            // TODO: the following line is bad
             var ws = new WebSocket("ws://"+window.location.host+"/websocket/"+window.location.pathname.split("/")[2]);
 
-            ws.on_message = function(evt) {
+            ws.onmessage = function(evt) {
                 if (evt.data == "host") {
                     make_drawable(canvas, ws);
                     console.log("drawing host");
