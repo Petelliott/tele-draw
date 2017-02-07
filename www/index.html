@@ -2,7 +2,16 @@
 <html>
     <head>
         <style>
-            body, canvas {margin: 0; padding: 0;}
+            * {
+                margin: 0;
+                padding: 0;
+                -webkit-box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                box-sizing: border-box;
+            }
+            canvas {
+                position: absolute;
+            }
         </style>
         <script src="draw.js"></script>
         <script src="view.js"></script>
@@ -11,6 +20,8 @@
         <canvas id="canvas" width="1280" height="720"></canvas>
         <script>
             var canvas = document.getElementById("canvas");
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
             // TODO: the following line is bad
             var ws = new WebSocket("ws://"+window.location.host+"/websocket/"+window.location.pathname.split("/")[2]);
 
