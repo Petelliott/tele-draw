@@ -1,10 +1,19 @@
 
 function getMousePos(canvas, evt) {
     var rect = canvas.getBoundingClientRect();
-    return [
-        evt.clientX - rect.left,
-        evt.clientY - rect.top
-    ];
+
+    if(evt.touches) {
+        var touch = evt.touches[0]; // Get the information for finger #1
+        return [
+            touch.pageX - rect.left,
+            touch.pageY - rect.top
+        ];
+    } else {
+        return [
+            evt.clientX - rect.left,
+            evt.clientY - rect.top
+        ];
+    }
 }
 
 
