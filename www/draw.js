@@ -16,17 +16,21 @@ function make_drawable(canvas, socket) {
 
     socket.onmessage = function() {};
 
-    canvas.addEventListener("mousedown", function(e) {
+    function start(e) {
         last = getMousePos(canvas, e);
         isdown = true;
-    });
+    }
+    canvas.addEventListener("mousedown", start);
+    canvas.addEventListener("touchstart", start);
 
-    canvas.addEventListener("mouseup", function(e) {
+    function end(e) {
         socket.send("-");
         isdown = false;
-    });
+    }
+    canvas.addEventListener("mouseup", end);
+    canvas.addEventListener("touchend", end);
 
-    canvas.addEventListener("mousemove", function(e) {
+    function draw(e) {
         if (isdown) {
             var current = getMousePos(canvas, e);
 
@@ -39,5 +43,7 @@ function make_drawable(canvas, socket) {
 
             last = current;
         }
-    });
+    }
+    canvas.addEventListener("mousemove", draw);
+    canvas.addEventListener("touchmove", draw);
 }
