@@ -41,6 +41,9 @@ function make_drawable(canvas, socket) {
     canvas.addEventListener("touchend", end);
 
     function draw(e) {
+        if (e.touches) {
+            e.preventDefault();
+        }
         if (isdown) {
             var current = getMousePos(canvas, e);
 
