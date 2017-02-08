@@ -1,48 +1,62 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <style>
-            * {
-                margin: 0;
-                padding: 0;
-                -webkit-box-sizing: border-box;
-                -moz-box-sizing: border-box;
-                box-sizing: border-box;
-            }
-            canvas {
-                position: absolute;
-            }
-            .jscolor{
-              position: absolute;
-            }
-        </style>
-        <script src="draw.js"></script>
-        <script src="view.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jscolor/2.0.4/jscolor.js"></script>
-    </head>
-    <body>
-        <canvas id="canvas" width="1280" height="720"></canvas>
-        <input class="jscolor {onFineChange:'changeColour(this)'}" value="000000">
 
-        <script>
-            var canvas = document.getElementById("canvas");
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            // TODO: the following line is bad
-            var ws = new WebSocket("ws://"+window.location.host+"/websocket/"+window.location.pathname.split("/")[2]);
-            console.log("attempted connect");
-            ws.onmessage = function(evt) {
-                if (evt.data == "host") {
-                    make_drawable(canvas, ws);
-                    console.log("drawing host");
-                } else if (evt.data == "client") {
-                    read_drawing(canvas, ws);
-                    var elements = document.getElementsByClassName('jscolor')[0].style.display = 'none';
-                    console.log("drawing client");
-                } else {
-                    console.err("invalid websocket initializer");
+<head>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        canvas {
+            position: absolute;
+        }
+
+        #controls {
+            z-index: 1;
+            position: absolute;
+            display: flex;
+        }
+    </style>
+    <script src="draw.js"></script>
+    <script src="view.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jscolor/2.0.4/jscolor.js"></script>
+</head>
+
+<body>
+    <canvas id="canvas" width="1280" height="720"></canvas>
+
+    <div id='controls'>
+        <input class="jscolor {onFineChange:'changeColour(this)'}" value="000000">
+        <input type="range" id="size" value="12" min="1" max="100" class="hostonly">
+    </div>
+
+    <script>
+        var canvas = document.getElementById("canvas");
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        // TODO: the following line is bad
+        var ws = new WebSocket("ws://" + window.location.host + "/websocket/" + window.location.pathname.split("/")[2]);
+        console.log("attempted connect");
+        ws.onmessage = function(evt) {
+            if (evt.data == "host") {
+                make_drawable(canvas, ws);
+                console.log("drawing host");
+            } else if (evt.data == "client") {
+                read_drawing(canvas, ws);
+                var divsToHide = document.getElementsByTagName("input");
+                for (var i = 0; i < divsToHide.length; i++) {
+                    divsToHide[i].style.display = "none";
                 }
-            };
-        </script>
-    </body>
+                console.log("drawing client");
+            } else {
+                console.err("invalid websocket initializer");
+            }
+        };
+    </script>
+</body>
+
 </html>

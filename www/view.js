@@ -15,9 +15,11 @@ function read_drawing(canvas, socket) {
         if (evt.data == '-') {
             new_line = true;
         } else if (new_line) {
-            ctx.strokeStyle = '#' + evt.data.split('#')[1]
+            ctx.strokeStyle = '#' + evt.data.split('#')[1];
+            ctx.lineWidth = evt.data.split('#')[2];
+
             last = parse_in(evt.data.split('#')[0]);
-            new_line = false
+            new_line = false;
         } else {
             ctx.strokeStyle = '#' + evt.data.split('#')[1]
             current = parse_in(evt.data.split('#')[0]);
