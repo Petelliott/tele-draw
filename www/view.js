@@ -6,7 +6,7 @@ function parse_in(str) {
 
 function read_drawing(canvas, socket) {
     var ctx = canvas.getContext('2d');
-    ctx.lineWidth=2;
+    ctx.lineWidth = 2;
 
     var new_line = true;
     var last;
@@ -15,10 +15,14 @@ function read_drawing(canvas, socket) {
         if (evt.data == '-') {
             new_line = true;
         } else if (new_line) {
-            last = parse_in(evt.data);
-            new_line = false
+            ctx.strokeStyle = '#' + evt.data.split('#')[1];
+            ctx.lineWidth = evt.data.split('#')[2];
+
+            last = parse_in(evt.data.split('#')[0]);
+            new_line = false;
         } else {
-            current = parse_in(evt.data);
+            ctx.strokeStyle = '#' + evt.data.split('#')[1]
+            current = parse_in(evt.data.split('#')[0]);
 
             ctx.beginPath();
             ctx.moveTo(...last);

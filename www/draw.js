@@ -1,3 +1,8 @@
+var colour = "000000";
+
+function changeColour(jscolor){
+  colour = ''+jscolor;
+}
 
 function getMousePos(canvas, evt) {
     var rect = canvas.getBoundingClientRect();
@@ -28,7 +33,10 @@ function make_drawable(canvas, socket) {
 
     function start(e) {
         last = getMousePos(canvas, e);
-        socket.send(last[0]+"|"+last[1]);
+        ctx.strokeStyle = '#'+colour;
+        ctx.lineWidth=document.getElementById("size").value;
+
+        socket.send(last[0]+"|"+last[1]+"#"+colour+"#"+document.getElementById("size").value);
         isdown = true;
     }
     canvas.addEventListener("mousedown", start);
@@ -47,8 +55,10 @@ function make_drawable(canvas, socket) {
         }
         if (isdown) {
             var current = getMousePos(canvas, e);
+            ctx.strokeStyle = '#'+colour;
+            ctx.lineWidth=document.getElementById("size").value;
 
-            socket.send(current[0]+"|"+current[1]);
+            socket.send(current[0]+"|"+current[1]+"#"+colour+"#"+document.getElementById("size").value);
 
             ctx.beginPath();
             ctx.moveTo(...last);
