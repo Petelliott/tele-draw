@@ -24,7 +24,8 @@ function getMousePos(canvas, evt) {
 
 function make_drawable(canvas, socket) {
     var ctx = canvas.getContext('2d');
-    ctx.lineWidth=2;
+    ctx.lineWidth = 2;
+    ctx.lineCap = "round";
 
     var isdown = false;
     var last;
