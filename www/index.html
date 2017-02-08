@@ -12,25 +12,32 @@
             canvas {
                 position: absolute;
             }
+            .jscolor{
+              position: absolute;
+            }
         </style>
         <script src="draw.js"></script>
         <script src="view.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jscolor/2.0.4/jscolor.js"></script>
     </head>
     <body>
         <canvas id="canvas" width="1280" height="720"></canvas>
+        <input class="jscolor {onFineChange:'changeColour(this)'}" value="000000">
+
         <script>
             var canvas = document.getElementById("canvas");
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
             // TODO: the following line is bad
             var ws = new WebSocket("ws://"+window.location.host+"/websocket/"+window.location.pathname.split("/")[2]);
-
+            console.log("attempted connect");
             ws.onmessage = function(evt) {
                 if (evt.data == "host") {
                     make_drawable(canvas, ws);
                     console.log("drawing host");
                 } else if (evt.data == "client") {
                     read_drawing(canvas, ws);
+                    var elements = document.getElementsByClassName('jscolor')[0].style.display = 'none';
                     console.log("drawing client");
                 } else {
                     console.err("invalid websocket initializer");
