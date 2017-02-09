@@ -13,6 +13,7 @@
 
         canvas {
             position: absolute;
+            cursor: crosshair;
         }
 
         #controls {
@@ -30,21 +31,50 @@
     <canvas id="canvas" width="1280" height="720"></canvas>
 
     <div id='controls'>
-        <input class="jscolor {onFineChange:'changeColour(this)'}" value="000000">
+        <input id="colour" class="jscolor {onFineChange:'changeColour(this)'}" value="000000">
         <input type="range" id="size" value="12" min="1" max="100" class="hostonly">
     </div>
 
     <script>
         var canvas = document.getElementById("canvas");
+
+        var radius_pckr = document.getElementById("size");
+        var colour_pckr = document.getElementById("colour");
+
+        function update_cursor(e) {
+            console.log(radius_pckr.value);
+            console.log(colour);
+
+            var cursor = document.createElement('canvas');
+            var ctx = cursor.getContext('2d');
+
+            cursor.width = radius_pckr.value;
+            cursor.height = radius_pckr.value;
+
+            ctx.fillStyle = "#"+colour;
+            ctx.beginPath();
+            ctx.arc(radius_pckr.value/2,radius_pckr.value/2,radius_pckr.value/2,0,2*Math.PI);
+            ctx.fill();
+
+            center = Math.floor(radius_pckr.value/2);
+
+            canvas.style.cursor = 'url(' + cursor.toDataURL() + ') '+center+' '+center+', crosshair';
+
+        }
+
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
         // TODO: the following line is bad
         var ws = new WebSocket("ws://" + window.location.host + "/websocket/" + window.location.pathname.split("/")[2]);
         console.log("attempted connect");
+
         ws.onmessage = function(evt) {
             if (evt.data == "host") {
                 make_drawable(canvas, ws);
                 console.log("drawing host");
+
+                radius_pckr.addEventListener("change", update_cursor);
+                colour_pckr.addEventListener("change", update_cursor);
             } else if (evt.data == "client") {
                 read_drawing(canvas, ws);
                 var divsToHide = document.getElementsByTagName("input");
