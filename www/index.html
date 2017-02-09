@@ -41,7 +41,7 @@
         var radius_pckr = document.getElementById("size");
         var colour_pckr = document.getElementById("colour");
 
-        function update_cursor(e) {
+        function update_cursor() {
             console.log(radius_pckr.value);
             console.log(colour);
 
@@ -73,6 +73,7 @@
                 make_drawable(canvas, ws);
                 console.log("drawing host");
 
+                update_cursor();
                 radius_pckr.addEventListener("change", update_cursor);
                 colour_pckr.addEventListener("change", update_cursor);
             } else if (evt.data == "client") {
